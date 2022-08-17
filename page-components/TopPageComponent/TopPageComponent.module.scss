@@ -3,7 +3,12 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   justify-items: left;
+  margin-bottom: 30px;
   gap: 20px;
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: auto 1fr;
+  }
 }
 
 .hhTitle {
