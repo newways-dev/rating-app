@@ -4,7 +4,7 @@
     [start] 70px [logoend] 30px [titlestart] calc(50% - 100px) [middle] 1fr
     [pricestart] auto [priceend] 40px [creditstart] auto
     [creditend] 40px [ratingstart] auto [end];
-  margin-bottom: 30px;
+  margin-top: 30px;
   padding: 30px;
 }
 
@@ -126,7 +126,6 @@
 .characteristics {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: baseline;
   padding-right: 40px;
   font-size: 16px;
   line-height: 32px;
@@ -139,7 +138,18 @@
 
 .characteristicsDots {
   margin-bottom: 5px;
-  border-bottom: 1px dashed var(--grey-light);
+  border-bottom: 1px dashed var(--grey);
+}
+
+.closed {
+  overflow: hidden;
+  max-width: 0;
+  padding: 0;
+}
+
+.open {
+  max-height: auto;
+  padding: 30px;
 }
 
 @media screen and (max-width: 1320px) {
