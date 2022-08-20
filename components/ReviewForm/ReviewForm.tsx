@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import clsx from 'clsx'
+import axios from 'axios'
 import { useForm, Controller } from 'react-hook-form'
 
-import { IReviewForm } from './ReviewForm.interface'
+import { IReviewForm, IReviewSentResponse } from './ReviewForm.interface'
 import { ReviewFormProps } from './ReviewForm.props'
 import { Textarea } from '../Textarea/Textarea'
 import { Rating } from '../Rating/Rating'
 import { Button } from '../Button/Button'
+import { API } from '../../helpers/api'
 import { Input } from '../Input/Input'
 import CloseIcon from './close.svg'
+
 import styles from './ReviewForm.module.scss'
 
 export const ReviewForm = ({
@@ -20,10 +24,28 @@ export const ReviewForm = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IReviewForm>()
 
-  const onSubmit = (data: IReviewForm) => {
-    console.log(data)
+  const [isSuccess, setIsSucces] = useState<boolean>(false)
+  const [error, setError] = useState<string>()
+
+  const onSubmit = async (formData: IReviewForm) => {
+    try {
+      const { data } = await axios.post<IReviewSentResponse>(
+        API.topPage.review.createDemo,
+        { ...formData, productId }
+      )
+
+      if (data.message) {
+        setIsSucces(true)
+        reset()
+      } else {
+        setError('Что-то пошло не так...')
+      }
+    } catch (error) {
+      setError(error.message)
+    }
   }
 
   return (
@@ -47,6 +69,7 @@ export const ReviewForm = ({
         <div className={styles.rating}>
           <span>Оценка: </span>
           <Controller
+            rules={{ required: { value: true, message: 'Укажите рейтинг' } }}
             control={control}
             name='rating'
             render={({ field }) => (
@@ -55,6 +78,7 @@ export const ReviewForm = ({
                 isEditable
                 setRating={field.onChange}
                 rating={field.value}
+                error={errors.rating}
               />
             )}
           />
@@ -75,11 +99,25 @@ export const ReviewForm = ({
           </span>
         </div>
       </div>
-      <div className={styles.success}>
-        <div className={styles.successTitle}>Ваш отзыв отправлен</div>
-        <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
-        <CloseIcon className={styles.close} />
-      </div>
+      {isSuccess && (
+        <div className={clsx(styles.panel, styles.success)}>
+          <div className={styles.successTitle}>Ваш отзыв отправлен</div>
+          <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
+          <CloseIcon
+            className={styles.close}
+            onClick={() => setIsSucces(false)}
+          />
+        </div>
+      )}
+      {error && (
+        <div className={clsx(styles.panel, styles.error)}>
+          Что-то пошло не так, попробуйте обновить страницу
+          <CloseIcon
+            className={styles.close}
+            onClick={() => setError(undefined)}
+          />
+        </div>
+      )}
     </form>
   )
 }

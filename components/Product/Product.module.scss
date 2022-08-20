@@ -40,6 +40,10 @@
   white-space: nowrap;
 }
 
+.ratingTitle a {
+  color: var(--primary);
+}
+
 .hr,
 .description,
 .actions {
