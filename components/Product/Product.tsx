@@ -1,15 +1,18 @@
+import { useState } from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
-import { ProductProps } from './Product.props'
-import { Card } from '../Card/Card'
-import styles from './Product.module.scss'
-import { Rating } from '../Rating/Rating'
-import { Tag } from '../Tag/Tag'
-import { Button } from '../Button/Button'
+
 import { declOfNum, priceRu } from '../../helpers/helpers'
+import { ReviewForm } from '../ReviewForm/ReviewForm'
+import { ProductProps } from './Product.props'
 import { Divider } from '../Divider/Divider'
-import { useState } from 'react'
+import { Rating } from '../Rating/Rating'
+import { Button } from '../Button/Button'
 import { Review } from '../Review/Review'
+import { Card } from '../Card/Card'
+import { Tag } from '../Tag/Tag'
+
+import styles from './Product.module.scss'
 
 export const Product = ({ product }: ProductProps): JSX.Element => {
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false)
@@ -98,8 +101,12 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
         })}
       >
         {product.reviews.map((r) => (
-          <Review key={r._id} review={r} />
+          <div key={r._id}>
+            <Review review={r} />
+            <Divider />
+          </div>
         ))}
+        <ReviewForm productId={product._id} />
       </Card>
     </>
   )

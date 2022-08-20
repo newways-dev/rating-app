@@ -82,7 +82,7 @@ export const Menu = (): JSX.Element => {
     return (
       <>
         {pages.map((page) => (
-          <Link href={`/${route}/${page.alias}`}>
+          <Link key={page._id} href={`/${route}/${page.alias}`}>
             <a
               className={clsx(styles.thirdLevel, {
                 [styles.thirdLevelActive]:
