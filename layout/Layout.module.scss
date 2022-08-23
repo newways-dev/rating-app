@@ -14,7 +14,7 @@
     grid-template-areas: 'header' 'body' 'footer';
 
     .header {
-      display: block;
+      display: grid;
     }
     .sidebar {
       display: none;
@@ -22,12 +22,12 @@
     .body {
       padding: 15px;
     }
+    gap: 10px;
   }
 }
 
 .header {
   grid-area: header;
-  display: none;
 }
 .sidebar {
   grid-area: sidebar;

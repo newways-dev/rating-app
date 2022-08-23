@@ -1,5 +1,5 @@
-import { ButtonIconProps, icons } from './ButtonIcon.props'
 import clsx from 'clsx'
+import { ButtonIconProps, icons } from './ButtonIcon.props'
 import styles from './ButtonIcon.module.scss'
 
 export const ButtonIcon = ({
