@@ -1,6 +1,7 @@
+import clsx from 'clsx'
+import { motion } from 'framer-motion'
 import { ButtonProps } from './Button.props'
 import ArrowIcon from './arrow.svg'
-import clsx from 'clsx'
 
 import styles from './Button.module.scss'
 
@@ -12,7 +13,8 @@ export const Button = ({
   ...props
 }: ButtonProps): JSX.Element => {
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05 }}
       className={clsx(styles.button, className, {
         [styles.primary]: appearance == 'primary',
         [styles.ghost]: appearance == 'ghost',
@@ -27,6 +29,6 @@ export const Button = ({
           <ArrowIcon />
         </span>
       )}
-    </button>
+    </motion.button>
   )
 }

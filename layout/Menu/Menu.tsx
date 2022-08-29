@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, KeyboardEvent } from 'react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
@@ -32,6 +32,16 @@ export const Menu = (): JSX.Element => {
       opacity: 0,
       height: 0,
     },
+  }
+
+  const openSecondLevelKey = (
+    keyEvent: KeyboardEvent,
+    secondCategory: string
+  ) => {
+    if (keyEvent.code === 'Space' || keyEvent.code === 'Enter') {
+      openSecondLevel(secondCategory)
+      keyEvent.preventDefault()
+    }
   }
 
   const openSecondLevel = (secondCategory: string) => {
@@ -82,6 +92,10 @@ export const Menu = (): JSX.Element => {
           return (
             <div key={m._id.secondCategory}>
               <div
+                tabIndex={0}
+                onKeyDown={(key: KeyboardEvent) =>
+                  openSecondLevelKey(key, m._id.secondCategory)
+                }
                 onClick={() => openSecondLevel(m._id.secondCategory)}
                 className={styles.secondLevel}
               >
@@ -94,7 +108,7 @@ export const Menu = (): JSX.Element => {
                 animate={m.isOpen ? 'visible' : 'hidden'}
                 className={clsx(styles.secondLevelBlock)}
               >
-                {buildThirdLevel(m.pages, menuItem.route)}
+                {buildThirdLevel(m.pages, menuItem.route, m.isOpen ?? false)}
               </motion.div>
             </div>
           )
@@ -102,11 +116,16 @@ export const Menu = (): JSX.Element => {
       </div>
     )
   }
-  const buildThirdLevel = (pages: PageItem[], route: string) => {
+  const buildThirdLevel = (
+    pages: PageItem[],
+    route: string,
+    isOpen: boolean
+  ) => {
     return pages.map((page) => (
       <motion.div variants={variantsChildren} key={page._id}>
         <Link href={`/${route}/${page.alias}`}>
           <a
+            tabIndex={isOpen ? 0 : -1}
             className={clsx(styles.thirdLevel, {
               [styles.thirdLevelActive]:
                 `/${route}/${page.alias}` == router.asPath,
